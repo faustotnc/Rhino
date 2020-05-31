@@ -1,0 +1,10 @@
+# This folder is for development testing only
+/testing/
+
+
+.vscode/*
+
+.tslint.json
+
+# System files
+.DS_Store
