@@ -17,7 +17,10 @@ Rhino comes with five different modules for strong REST-API creation:
 ### Step 1) Create a Server
 Crete a file named `server.ts`, then copy and paste the following code inside it.
 ``` typescript
-import { Rhino_Server, OnServerListening, ServerOptions, RunServers } from "https://deno.land/x/rhino/mod.ts";
+import {
+    Rhino_Server, OnServerListening,
+    ServerOptions, RunServers
+} from "https://deno.land/x/rhino/mod.ts";
 
 // The server's router (next step)
 import { myRouter } from  './router.ts';
@@ -97,6 +100,10 @@ export class helloWorld implements onEndpointCalled {
     }
 }
 ```
+Open a command line and run ``$ deno run -c ./tsconfig.json --allow-net server.ts``.
+
+**NOTE:** Using Rhino requires the ``"experimentalDecorators": true`` in your project's tsconfig.json file.
+
 Finally, navigate to `localhost:3200/hello` to be greeted by your newly created Rhino server.
 
 

@@ -43,6 +43,7 @@ export class CreateServer {
         this.SERVER = HTTPServer.serve({ port: this.PORT, hostname: this.HOSTNAME })
 
         // Starts listening for requests
+        // TODO: hostname is undefined when not explicitly specified in Rhino_Server
         this.listen(s.router).then(() => s.onListening(s));
     }
 
