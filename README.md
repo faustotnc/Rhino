@@ -109,7 +109,7 @@ Finally, navigate to `localhost:3200/hello` to be greeted by your newly created 
 
 
 ## Scalability
-You may be wondering, why so many files for a simple "hello world" project? The answer lies in scalability. Most real-world REST-APIs do not have single file for all their code. Instead, the code is split into many files, folders, and sub-folders to create a robust application. Rhino takes care of all the thinking that goes behind defining a folder structure for your project by encouraging code refraction. To see an example of a simple Rhino Project, visit the ``_example`` folder.
+You may be wondering, why so many files for a simple "hello world" project? The answer lies in scalability. Most real-world REST-APIs do not have a single file for all their code. Instead, the code is split into many files, folders, and sub-folders to create a robust application. Rhino takes care of all the thinking that goes behind defining a folder structure for your project by encouraging code refraction. To see an example of a simple Rhino project, visit the ``_example`` folder.
 
 
 

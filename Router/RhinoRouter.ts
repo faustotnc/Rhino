@@ -1,4 +1,4 @@
-import { EndpointParams, DecoratedClass, RhinoRequest, HttpMethod } from '../mod.ts';
+import { EndpointParams, DecoratedClass, RhinoRequest, HttpMethod, RhinoEndpoint } from '../mod.ts';
 
 /**
  * A route object
@@ -15,7 +15,7 @@ interface endpointPoolItem {
     routePath: string;
     fullPath: string;
     handler: DecoratedClass;
-    method: HttpMethod | "ALL"
+    method: HttpMethod | HttpMethod[];
 }
 
 /**
@@ -40,22 +40,8 @@ export class RhinoRouter {
     public addRoute(routePath: string, endpoints: DecoratedClass[]) {
         // Checks the slashes of the route's path
         this.check_slashes(routePath, "Route")
-
-        // Checks all the endpoints inside the 
-        endpoints.forEach(endpoint => {
-            const ep = endpoint.prototype.endpointParams as EndpointParams;
-
-            // Checks the slashes of the endpoint's path
-            this.check_slashes(ep.path, "Endpoint");
-
-            this.ENDPOINTS_POOL.push({
-                routePath: routePath,
-                fullPath: routePath + ep.path,
-                handler: endpoint,
-                method: ep.method
-            });
-        });
-
+        // adds the endpoint to the endpoints pool
+        endpoints.forEach(endpoint => this.addEndpointToThePool(endpoint, routePath));
         // Checks that no two endpoints share the same path
         this.check_no_same_endpoint_path();
     }
@@ -67,20 +53,35 @@ export class RhinoRouter {
      * @param endpoint The endpoint class
      */
     public addEndpoint(endpoint: DecoratedClass) {
-        const ep = endpoint.prototype.endpointParams as EndpointParams;
+        // adds the endpoint to the endpoints pool
+        this.addEndpointToThePool(endpoint)
+        // Checks that no two endpoints share the same path
+        this.check_no_same_endpoint_path();
+    }
+
+
+    /**
+     * Adds a new endpoint (with request method overload) to the endpoint pool
+     * @param endpoint The endpoint to add to the pool
+     * @param route The route to which the endpoint will be attached
+     */
+    private addEndpointToThePool(endpoint: DecoratedClass, route?: string) {
+        // Accesses the properties of the endpoint without instantiating the endpoint's class
+        const ep = endpoint.prototype.endpointParams as RhinoEndpoint;
 
         // Checks the slashes of the endpoint's path
         this.check_slashes(ep.path, "Endpoint");
 
-        this.ENDPOINTS_POOL.push({
-            routePath: "/",
-            fullPath: ep.path,
-            handler: endpoint,
-            method: ep.method
+        // Adds the endpoint to the endpoints pool for each
+        // request method that the endpoint is able to handler
+        ep.method.forEach((method: HttpMethod) => {
+            this.ENDPOINTS_POOL.push({
+                routePath: (route) ? route : "/",
+                fullPath: (route) ? route + ep.path : ep.path,
+                handler: endpoint,
+                method: method
+            });
         });
-
-        // Checks that no two endpoints share the same path
-        this.check_no_same_endpoint_path();
     }
 
 
@@ -95,8 +96,8 @@ export class RhinoRouter {
     public matchEndpoint(req: RhinoRequest): endpointPool | null {
         // Gets a list of objects that match the requested route
         const matchedRoutes = this.ENDPOINTS_POOL.filter((endpoint) => {
-            // console.log(req.path, req.root + route.path, req.URLObject.urlMatch(req.root + route.path))
-            return req.URLObject.pathMatch(endpoint.fullPath) && endpoint.method === req.method
+            const methodsMatch = endpoint.method === req.method || endpoint.method === HttpMethod._ALL;
+            return req.URLObject.pathMatch(endpoint.fullPath) && methodsMatch;
         })
 
         // Returns the handler class
@@ -128,7 +129,7 @@ export class RhinoRouter {
             // Gets all the endpoints with the same path and HTTP method
             const foundRoutes = this.ENDPOINTS_POOL.filter((current_endpoint) => {
                 const methodMatch = current_endpoint.method === endpoint.method
-                    || [current_endpoint.method, endpoint.method].includes("ALL");
+                    || [current_endpoint.method, endpoint.method].includes(HttpMethod._ALL);
 
                 return current_endpoint.fullPath === endpoint.fullPath && methodMatch
             })

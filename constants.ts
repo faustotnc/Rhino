@@ -4,15 +4,29 @@ const charsetUTF8 = "charset=UTF-8";
  * Supported HTTP status codes.
  */
 export enum HttpMethod {
+    // Common HTTP request methods
+    /** HTTP Method of Type GET. Used to retrieve information from the server. */
     GET = "GET",
-    HEAD = "HEAD",
+    /** HTTP Method of Type POST. Used to send (and store) data in the server. */
     POST = "POST",
+    /** HTTP Method of Type PUT. Used to update already existing data in the server. */
     PUT = "PUT",
-    PATCH = "PATCH",
+    /** HTTP Method of Type DELETE. Used to remove already existing data from the server. */
     DELETE = "DELETE",
+    /** HTTP Method of Type HEAD. Same as GET, but transfers the status line and header section only. */
+    HEAD = "HEAD",
+
+    // Other HTTP request methods
+    PATCH = "PATCH",
     CONNECT = "CONNECT",
     OPTIONS = "OPTIONS",
     TRACE = "TRACE",
+
+    /**
+     * Accepts ANY request method
+     * @note This is not an official HTTP Request Method (hence the underscore)
+     */
+    _ALL = "ALL"
 }
 
 

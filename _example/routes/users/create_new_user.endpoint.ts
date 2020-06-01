@@ -1,5 +1,5 @@
 import {
-    Rhino_Endpoint, onEndpointCalled, RhinoRequest, RhinoResponse,
+    Rhino_Endpoint, OnEndpointCalled, RhinoRequest, RhinoResponse,
     HttpMethod, MIMEType
 } from '../../../mod.ts';
 
@@ -8,7 +8,7 @@ import {
     path: "/new/:name", // The path for this endpoint, where /:name is a parameter
     method: HttpMethod.POST, // This endpoint will only listen to POST requests
 })
-export class CreateNewUsersEndpoint implements onEndpointCalled {
+export class CreateNewUsersEndpoint implements OnEndpointCalled {
 
     constructor(
         private req: RhinoRequest,

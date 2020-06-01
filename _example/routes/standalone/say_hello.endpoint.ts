@@ -1,5 +1,5 @@
 import {
-    Rhino_Endpoint, onEndpointCalled, RhinoRequest,
+    Rhino_Endpoint, OnEndpointCalled, RhinoRequest,
     RhinoResponse, NextHook, NextError, HttpMethod, MIMEType
 } from "../../../mod.ts";
 
@@ -8,7 +8,7 @@ import {
     path: "/hello",
     method: HttpMethod.GET,
 })
-export class HelloWorld implements onEndpointCalled {
+export class HelloWorld implements OnEndpointCalled {
 
     constructor(
         private req: RhinoRequest,
