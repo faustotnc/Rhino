@@ -95,29 +95,7 @@ export class RhinoURL {
      * the getQueries() method will return { username: "john_doe", password: "x2r" }
      */
     public getQueries(): { [key: string]: string } | {} {
-        // WIll be populated with query-value pairs (if any are found)
-        const queries = {};
-
-        // If there are any queries...
-        if (this.queryString) {
-            // split the queries into query=value strings
-            const fieldValuePairs = this.queryString.split('&');
-
-            // The for each of those query=value strings...
-            fieldValuePairs.forEach(pair => {
-                // split them into query-value lists (where the first
-                // item is the query and the second item is the value)
-                const field_value = pair.split('=');
-                const field = field_value[0];
-                const value = field_value[1];
-
-                // add the query-value pair to the "queries" object
-                Object.assign(queries, { [field]: value });
-            })
-        }
-
-        // return the queries (or an empty object, if non found)
-        return queries;
+        return Utils.ParseURLQueries(this.queryString);
     }
 
 

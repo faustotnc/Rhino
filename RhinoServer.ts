@@ -12,6 +12,10 @@ export interface ServerOptions {
     readonly guard?: () => boolean;
     readonly hooks?: HookClass[];
     readonly errorHandlers?: ErrorClass[];
+    readonly TLS?: {
+        certFile: string;
+        keyFile: string;
+    }
 }
 
 
@@ -68,11 +72,12 @@ export const Rhino_Server = (serverParams: ServerOptions) => {
         // Adds the server properties to the decorated class
         return class extends target implements RhinoServer {
             public port = serverParams.port;
-            public hostname = serverParams.hostname;
+            public hostname = serverParams.hostname || '0.0.0.0';
             public router = serverParams.router;
             public guard = serverParams.guard;
             public hooks = serverParams.hooks;
             public errorHandlers = serverParams.errorHandlers;
+            public TLS = serverParams.TLS;
 
             // Attaches the onListening method to the class if it exists
             public onListening = (target.prototype.onListening) ? target.prototype.onListening : () => { };

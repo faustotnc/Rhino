@@ -40,10 +40,20 @@ export class CreateServer {
         this.ERROR_HANDLERS = s.errorHandlers ?? [];
 
         // Creates a server on the port specified in PORT
-        this.SERVER = HTTPServer.serve({ port: this.PORT, hostname: this.HOSTNAME })
+        if (s.TLS) {
+            // Creates a TLS server if the TLS option is provided
+            this.SERVER = HTTPServer.serveTLS({
+                port: this.PORT,
+                hostname: this.HOSTNAME,
+                certFile: s.TLS.certFile,
+                keyFile: s.TLS.keyFile
+            })
+        } else {
+            // Creates a standard server without TLS
+            this.SERVER = HTTPServer.serve({ port: this.PORT, hostname: this.HOSTNAME })
+        }
 
         // Starts listening for requests
-        // TODO: hostname is undefined when not explicitly specified in Rhino_Server
         this.listen(s.router).then(() => s.onListening(s));
     }
 
@@ -114,7 +124,7 @@ export class CreateServer {
             // If the passed error code is a valid status code, we set it automatically
             if (Object.values(StatusCode).includes(errorData.code)) genResponse.status(errorData.code);
 
-            for await (const err of this.execAErrorHandlers(errorData, genRequest, genResponse)) {
+            for await (const err of this.execErrorHandlers(errorData, genRequest, genResponse)) {
                 // If the headers were sent to the client by one of the error handlers, or the err constant holds
                 // a value (sent by calling the error callback in the hook's class), we break the loop.
                 if (genResponse.headersSent || err) {
@@ -229,7 +239,7 @@ export class CreateServer {
      * @param req The generated RhinoRequest for this request
      * @param res The generated RhinoResponse for this request
      */
-    private * execAErrorHandlers(error: ErrorData, req: RhinoRequest, res: RhinoResponse) {
+    private * execErrorHandlers(error: ErrorData, req: RhinoRequest, res: RhinoResponse) {
         for (let i = 0; i < this.ERROR_HANDLERS.length; i++) {
             const errHandler = this.ERROR_HANDLERS[i];
 

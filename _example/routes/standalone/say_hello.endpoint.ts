@@ -20,6 +20,15 @@ export class HelloWorld implements OnEndpointCalled {
     /** Executed when this endpoint is requested */
     public onEndpointCall() {
         // Sets the content type, and sends data to the client
-        this.res.contentType(MIMEType.TextHTML).send("<h1>Hello Rhinos 🦏!</h1>");
+        this.res.contentType(MIMEType.TextHTML).send(`
+            <html>
+                <header>
+                    <meta charset='UTF-8'>
+                </header>
+                <body>
+                    <h1>Hello Rhinos 🦏!</h1>
+                </body>
+            </html>
+        `);
     }
 }

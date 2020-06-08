@@ -36,4 +36,32 @@ export class Utils {
             throw new Error(message)
         } catch (err) { console.error(err) };
     }
+
+
+    /**
+     * Parses a given url query string into an object of query-value pairs.
+     * @param queryString the url query string
+     */
+    public static ParseURLQueries(queryString: string) {
+        // WIll be populated with query-value pairs (if any are found)
+        const queries = {};
+
+        // split the queries into query=value strings
+        const fieldValuePairs = queryString.split('&');
+
+        // The for each of those query=value strings...
+        fieldValuePairs.forEach(pair => {
+            // split them into query-value lists (where the first
+            // item is the query and the second item is the value)
+            const field_value = pair.split('=');
+            const field = decodeURI(field_value[0]);
+            const value = decodeURI(field_value[1]);
+
+            // add the query-value pair to the "queries" object
+            Object.assign(queries, { [field]: value });
+        })
+
+        // return the queries (or an empty object, if non found)
+        return queries;
+    }
 }

@@ -1,7 +1,4 @@
-import {
-    Rhino_Endpoint, OnEndpointCalled, RhinoRequest, RhinoResponse,
-    HttpMethod, MIMEType
-} from '../../../mod.ts';
+import { Rhino_Endpoint, OnEndpointCalled, RhinoRequest, RhinoResponse, HttpMethod, MIMEType } from '../../../mod.ts';
 
 
 @Rhino_Endpoint({

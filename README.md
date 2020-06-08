@@ -1,5 +1,7 @@
 # Rhino 🦏 - The Framework for scalable APIs.
 
+🎉 RC-2 introduced out-of-the-box support for parsing JSON and Form data from the request body, as well as the ability to send files to the client in the response body. [Check out the highlights!](https://github.com/faustotnc/Rhino/releases) 🎉
+
 Rhino is an Angular-inspired framework for creating scalable REST-APIs. It provides a route-endpoint architecture that takes advantage of the many features provided by the TypeScript language. It encourages a project structure that is self-described and consistent, so that programmers within the project can collaborate seamlessly.
 
 Rhino comes with five different modules for strong REST-API creation:
@@ -70,7 +72,7 @@ export const myRouter = ROUTER;
 Create a file named `hello_world.endpoint.ts`, then copy and paste the following code inside it.
 ``` typescript
 import {
-    Rhino_Endpoint, onEndpointCalled, RhinoRequest,
+    Rhino_Endpoint, OnEndpointCalled, RhinoRequest,
     RhinoResponse, NextHook, NextError, HttpMethod, MIMEType
 } from "https://deno.land/x/rhino/mod.ts";
 
@@ -79,7 +81,7 @@ import {
     path: "/hello", // The path for this endpoint
     method: HttpMethod.GET, // This endpoint will only listen to GET requests
 })
-export class helloWorld implements onEndpointCalled {
+export class helloWorld implements OnEndpointCalled {
 
     // The constructor accepts the following parameters (in that order):
     // The Request Object,
