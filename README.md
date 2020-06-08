@@ -4,6 +4,12 @@
 
 Rhino is an Angular-inspired framework for creating scalable REST-APIs. It provides a route-endpoint architecture that takes advantage of the many features provided by the TypeScript language. It encourages a project structure that is self-described and consistent, so that programmers within the project can collaborate seamlessly.
 
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/faustotnc/rhino?include_prereleases&color=3d6057)](https://github.com/faustotnc/Rhino/releases)
+[![tag](https://img.shields.io/badge/deno->=1.0.0-green.svg?color=3d6057)](https://github.com/denoland/deno)
+[![tag](https://img.shields.io/badge/std-0.56.0-green.svg?color=3d6057)](https://github.com/denoland/deno)
+[![GitHub license](https://img.shields.io/github/license/faustotnc/rhino?color=bf9f32)](https://github.com/faustotnc/Rhino/blob/master/LICENSE)
+
+
 Rhino comes with five different modules for strong REST-API creation:
 
 - **@Rhino_Server** - *Class Decorator*: Creates a new server.
