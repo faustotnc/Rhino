@@ -193,8 +193,13 @@ export class RhinoResponse {
      * @param resData The data to send to the client
      */
     public send(resData: any) {
+        let d = resData;
+
         // If a response was already sent to the client, we log an error
         if (this._headersSent) Utils.logPassiveError("A response has already been sent!");
+
+        // If the data is an object, we convert it to a string
+        if (typeof d === "object") d = JSON.stringify(d);
 
         this.HTTP_REQUEST.done.then(() => {
             // Prevents any other responses from being
@@ -206,7 +211,7 @@ export class RhinoResponse {
         if (!this._headersSent) this.HTTP_REQUEST.respond({
             status: this.STATUS,
             headers: this.RESPONSE_HEADERS,
-            body: JSON.stringify(resData), // converts any data into a string
+            body: d, // converts any data into a string
             ...this.COOKIES
         });
     }

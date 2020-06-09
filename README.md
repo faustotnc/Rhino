@@ -2,6 +2,8 @@
 
 🎉 RC-2 introduced out-of-the-box support for parsing JSON and Form data from the request body, as well as the ability to send files to the client in the response body. [Check out the highlights!](https://github.com/faustotnc/Rhino/releases) 🎉
 
+A [documentation website](https://rhino.faustogerman.com) is on its way! 
+
 Rhino is an Angular-inspired framework for creating scalable REST-APIs. It provides a route-endpoint architecture that takes advantage of the many features provided by the TypeScript language. It encourages a project structure that is self-described and consistent, so that programmers within the project can collaborate seamlessly.
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/faustotnc/rhino?include_prereleases&color=3d6057)](https://github.com/faustotnc/Rhino/releases)
