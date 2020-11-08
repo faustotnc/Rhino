@@ -65,7 +65,7 @@ export const Rhino_Error = (code: number) => {
             public errorCode = code;
 
             // Attaches the onHandle method to the class if it exists
-            public executeError = (target.prototype.executeError) ? target.prototype.executeError : () => { };
+            public executeError = target.prototype.executeError || (() => { });
         }
     }
 }

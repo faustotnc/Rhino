@@ -63,30 +63,24 @@ export class RhinoRequest {
     /**
      * Checks if the client accepts the passed mime type
      * @param contentType The mime type to be checked
-     * 
-     * TODO: Expand support for passing and array of mime types. Also, the client may send multiple mime types as well.
-     * TODO: Visit https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept for more information
      */
     public accepts(contentType: MIMEType) {
-        const questionedType = (Array.isArray(contentType)) ? contentType : [contentType]
         const accepted = this.getHeaderField(HeaderField.Accept);
 
         // If the client accepts any type, then we return true,
-        // no matter what the passed type is.
+        // no matter what the passed MIME type is.
         if (accepted === "*/*") return true;
 
-        // This only works for single mime types
-        if (accepted === accepted) return true;
+        // Returns true if the passed mime type is in the 'accepts' header
+        return accepted && accepted.includes(contentType);
     }
 
 
     /**
      * Parses the body of the http request.
-     * @returns an object containing the key-value pairs of the JSON data sent
-     * in the request when the request content-type is application/json, otherwise
-     * returns the raw text.
-     * 
-     * TODO: Expand support for other content types
+     * @returns an object containing the key-value pairs of the JSON data sent in the request
+     * when the request content-type is application/json or application/x-www-form-urlencoded,
+     * otherwise, returns the raw data in the form of a string.
      */
     public async body(): Promise<{ [key: string]: any; } | string> {
         const decoder = new TextDecoder()

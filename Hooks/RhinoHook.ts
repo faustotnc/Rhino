@@ -63,7 +63,7 @@ export const Rhino_Hook = (hookParams: hookParameter) => {
             public path = hookParams.path ?? "**";
 
             // Attaches the executeHook method to the class if it exists
-            public executeHook = (target.prototype.executeHook) ? target.prototype.executeHook : () => { };
+            public executeHook = target.prototype.executeHook || (() => { });
         }
     }
 }

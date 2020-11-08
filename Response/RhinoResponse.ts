@@ -1,5 +1,5 @@
 import { HTTPServer, Cookies, Path } from "../deps.ts";
-import { HeaderField, MIMEType, StatusCode, StatusCodeName, FileExtensionMIMEType } from "../mod.ts";
+import { HeaderField, MIMEType, StatusCode, StatusCodeName, ExtMIMEType } from "../mod.ts";
 import { Utils } from '../utils.ts';
 
 
@@ -123,11 +123,11 @@ export class RhinoResponse {
         } else {
             // For anything else, we assume it to be a file extension or file type.
             // If the file extension could not be understood, we leave it as text/plain
-            const foundMime = Object.keys(FileExtensionMIMEType).filter(key => {
+            const foundMime = Object.keys(ExtMIMEType).filter(key => {
                 const keyName = ((mime.startsWith(".")) ? "." : "") + key;
                 return keyName === mime
             })
-            let mimeFileExt = FileExtensionMIMEType[foundMime[0]];
+            let mimeFileExt = ExtMIMEType[foundMime[0]];
             if (mimeFileExt) { _mime = mimeFileExt } else {
                 Utils.logPassiveError("The passed file extension could not be understood. Please specify the mime type directly.")
             };

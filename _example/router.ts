@@ -6,7 +6,7 @@ const ROUTER = new RhinoRouter();
 
 // Endpoints
 import { CreateNewUsersEndpoint } from "./routes/users/create_new_user.endpoint.ts";
-import { HelloWorld } from "./routes/standalone/say_hello.endpoint.ts"
+import { HelloWorld } from "./routes/standalone/say_hello.endpoint.ts";
 
 
 // Mounts endpoints to the /users route

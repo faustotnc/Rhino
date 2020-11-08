@@ -138,7 +138,7 @@ export class CreateServer {
 
 
     /**
-     * Executes all hooks labeled as "PRE" (one-by-one, and in of declaration).
+     * Executes all hooks labeled as "PRE" (one-by-one; in order of declaration).
      * @param req The generated RhinoRequest for this request
      * @param res The generated RhinoResponse for this request
      */
@@ -165,12 +165,12 @@ export class CreateServer {
 
 
     /**
-     * Executes the first found endpoint for this request. If no endpoints
-     * were found that could handle the request, we simply proceed to execute
+     * Executes the first found endpoint for the request. If no endpoints
+     * were found that could handle the request, the program proceeds to execute
      * the hooks labeled as "AFTER"
      * @param router The application's router
-     * @param req The generated RhinoRequest for this request
-     * @param res The generated RhinoResponse for this request
+     * @param req The generated RhinoRequest for the request
+     * @param res The generated RhinoResponse for the request
      */
     private * execEndpoint(router: RhinoRouter, req: RhinoRequest, res: RhinoResponse) {
         // Finds an endpoint that can handle the request
@@ -206,7 +206,7 @@ export class CreateServer {
 
 
     /**
-     * Executes all hooks labeled as "AFTER" (one-by-one, and in of declaration).
+     * Executes all hooks labeled as "AFTER" (one-by-one; in order of declaration).
      * @param req The generated RhinoRequest for this request
      * @param res The generated RhinoResponse for this request
      */
@@ -233,7 +233,7 @@ export class CreateServer {
 
 
     /**
-     * Executes an error class based on the error code provided by the
+     * Executes an error handler based on the error code provided by the
      * class which threw the error
      * @param error The error data thrown by one of the middlewares
      * @param req The generated RhinoRequest for this request

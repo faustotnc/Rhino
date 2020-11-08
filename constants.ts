@@ -203,9 +203,9 @@ export const StatusCodeName: { [key: string]: string } = {
     NetworkConnectTimeoutError: "Network Connect Timeout Error",
 }
 
+
 /**
- * Fields that can be sent to the client in the header
- * 
+ * Common Header Fields
  */
 export enum HeaderField {
     Accept = "Accept",
@@ -288,7 +288,7 @@ export enum MIMEType {
 /**
  * The MIME type for common file extensions
  */
-export const FileExtensionMIMEType: { [key: string]: string } = {
+export const ExtMIMEType: { [key: string]: string } = {
     "3g2": "video/3gpp2",
     "3gp": "video/3gpp",
     "7z": "application/x-7z-compressed",
