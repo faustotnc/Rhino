@@ -1,11 +1,9 @@
 import { HTTPServer, Cookies, Path } from "../deps.ts";
 import { HeaderField, MIMEType, StatusCode, StatusCodeName, ExtMIMEType } from "../mod.ts";
-import { Utils } from '../utils.ts';
-
+import { Utils } from "../utils.ts";
 
 // Derives the optional values of a cookie
 export type CookieOptions = Omit<Omit<Cookies.Cookie, "name">, "value">;
-
 
 export class RhinoResponse {
     private _headersSent: boolean = false;
@@ -14,8 +12,7 @@ export class RhinoResponse {
 
     private readonly RESPONSE_HEADERS = new Headers();
 
-    constructor(private readonly HTTP_REQUEST: HTTPServer.ServerRequest) { }
-
+    constructor(private readonly HTTP_REQUEST: HTTPServer.ServerRequest) {}
 
     /**
      * Appends a value to an already existing HTTP header field, or
@@ -29,7 +26,6 @@ export class RhinoResponse {
         return this;
     }
 
-
     /**
      * Appends a value to an already existing HTTP header field, or
      * adds the field if it has not been created.
@@ -40,15 +36,14 @@ export class RhinoResponse {
     public appendHeader(field: string, value: string | string[]): RhinoResponse {
         if (Array.isArray(value)) {
             // Joins the values with a comma, if they are an array of values
-            value.forEach(val => this.RESPONSE_HEADERS.append(field, val));
+            value.forEach((val) => this.RESPONSE_HEADERS.append(field, val));
         } else {
             // Otherwise, just adds the value to the header
-            this.RESPONSE_HEADERS.append(field, value)
+            this.RESPONSE_HEADERS.append(field, value);
         }
 
         return this;
     }
-
 
     /**
      * Sets the HTTP response Content-Disposition header field to “attachment”.
@@ -57,15 +52,14 @@ export class RhinoResponse {
      * @param filename The name that will be set to the downloaded file
      */
     public asAttachment(filename?: string): RhinoResponse {
-        const _filename = (filename) ? `filename=${filename};` : '';
-        this.setHeader(HeaderField.ContentDisposition, `attachment; ${_filename}`)
+        const _filename = filename ? `filename=${filename};` : "";
+        this.setHeader(HeaderField.ContentDisposition, `attachment; ${_filename}`);
 
-        const ext = Path.extname(filename || "")
+        const ext = Path.extname(filename || "");
         this.contentType(ext);
 
         return this;
     }
-
 
     /**
      * Clears a cookie from the response by setting
@@ -76,7 +70,6 @@ export class RhinoResponse {
         // Sets the cookie to be appended to the response
         Cookies.delCookie(this.COOKIES, name);
     }
-
 
     /**
      * Sends a cookie to the client with the specified name and value
@@ -90,17 +83,16 @@ export class RhinoResponse {
         if (typeof value === "object") value = JSON.stringify(value);
 
         // Form the cookie data
-        const c: Cookies.Cookie = { name, value, ...options }
+        const c: Cookies.Cookie = { name, value, ...options };
 
         // Sets the cookie to be appended to the response
         Cookies.setCookie(this.COOKIES, c);
     }
 
-
     /**
      * Sets the content-type header.
      * @param mime The MIME type, or file extension
-     * 
+     *
      * @example
      * ```
      * // file extension
@@ -116,27 +108,30 @@ export class RhinoResponse {
     public contentType(mime: string): RhinoResponse {
         let _mime: string = MIMEType.TextPlain;
 
-        if (mime.includes('/')) {
+        if (mime.includes("/")) {
             // If the passed mime contains a slash, we
             // will assume it to be a mime type directly.
             _mime = mime;
         } else {
             // For anything else, we assume it to be a file extension or file type.
             // If the file extension could not be understood, we leave it as text/plain
-            const foundMime = Object.keys(ExtMIMEType).filter(key => {
-                const keyName = ((mime.startsWith(".")) ? "." : "") + key;
-                return keyName === mime
-            })
+            const foundMime = Object.keys(ExtMIMEType).filter((key) => {
+                const keyName = (mime.startsWith(".") ? "." : "") + key;
+                return keyName === mime;
+            });
             let mimeFileExt = ExtMIMEType[foundMime[0]];
-            if (mimeFileExt) { _mime = mimeFileExt } else {
-                Utils.logPassiveError("The passed file extension could not be understood. Please specify the mime type directly.")
-            };
+            if (mimeFileExt) {
+                _mime = mimeFileExt;
+            } else {
+                Utils.logPassiveError(
+                    "The passed file extension could not be understood. Please specify the mime type directly."
+                );
+            }
         }
 
         this.set(HeaderField.ContentType, _mime);
         return this;
     }
-
 
     /**
      * Send the contents of a file in the HTTP response's body for automatic download by the client.
@@ -146,22 +141,21 @@ export class RhinoResponse {
      * @note Requires the --allow-read flag
      */
     public async download(filepath: string, filename?: string): Promise<any> {
-        const file_n = filename ?? filepath.split('/').pop();
+        const file_n = filename ?? filepath.split("/").pop();
         return new Promise(async (resolve, reject) => {
             try {
                 this.asAttachment(file_n);
                 this.sendFile(filepath)
-                    .then(() => resolve())
-                    .catch(err => {
+                    .then(() => resolve(true))
+                    .catch((err) => {
                         this.removeHeader(HeaderField.ContentDisposition);
                         reject(err);
-                    })
+                    });
             } catch (err) {
-                reject(err)
+                reject(err);
             }
-        })
+        });
     }
-
 
     /**
      * Sends the response without any data.
@@ -170,7 +164,6 @@ export class RhinoResponse {
         this.HTTP_REQUEST.finalize();
     }
 
-
     /**
      * Returns wether the headers have been sent or not
      */
@@ -178,15 +171,13 @@ export class RhinoResponse {
         return this._headersSent;
     }
 
-
     /**
      * Removes a header field from the the response headers.
      * @param field The header field to be removed
      */
     public removeHeader(field: string) {
-        this.RESPONSE_HEADERS.delete(field)
+        this.RESPONSE_HEADERS.delete(field);
     }
-
 
     /**
      * Sends the passed resData as a response to the client
@@ -205,17 +196,17 @@ export class RhinoResponse {
             // Prevents any other responses from being
             // sent after this response has been sent.
             this._headersSent = true;
-        })
+        });
 
         // If no response has been sent to the client, the data is sent to the client
-        if (!this._headersSent) this.HTTP_REQUEST.respond({
-            status: this.STATUS,
-            headers: this.RESPONSE_HEADERS,
-            body: d, // converts any data into a string
-            ...this.COOKIES
-        });
+        if (!this._headersSent)
+            this.HTTP_REQUEST.respond({
+                status: this.STATUS,
+                headers: this.RESPONSE_HEADERS,
+                body: d, // converts any data into a string
+                ...this.COOKIES,
+            });
     }
-
 
     /**
      * Transfers the file at the given path in the response body,
@@ -236,42 +227,41 @@ export class RhinoResponse {
                 const [file, fileInfo] = await Promise.all([Deno.open(p), Deno.stat(p)]);
 
                 this.contentType(ext);
-                this.setHeader("content-length", fileInfo.size.toString())
+                this.setHeader("content-length", fileInfo.size.toString());
 
                 this.HTTP_REQUEST.done.then(() => {
                     // closes the file after the request is done
-                    file.close()
+                    file.close();
 
                     // Prevents any other responses from being
                     // sent after this response has been sent.
                     this._headersSent = true;
 
-                    resolve()
-                })
+                    resolve(true);
+                });
 
                 // If no response has been sent to the client, the data is sent to the client
-                if (!this._headersSent) this.HTTP_REQUEST.respond({
-                    status: this.STATUS,
-                    headers: this.RESPONSE_HEADERS,
-                    body: file,
-                    ...this.COOKIES
-                });
+                if (!this._headersSent)
+                    this.HTTP_REQUEST.respond({
+                        status: this.STATUS,
+                        headers: this.RESPONSE_HEADERS,
+                        body: file,
+                        ...this.COOKIES,
+                    });
             } catch (err) {
-                reject(err)
+                reject(err);
             }
-        })
+        });
     }
-
 
     /**
      * Sends a status code and its string name to the client.
      * @param code The status code
      */
     public sendStatus(code: StatusCode) {
-        const n = StatusCodeName[Object.keys(StatusCode)[Object.values(StatusCode).indexOf(code)]]
-        this.status(code).send(n)
+        const n = StatusCodeName[Object.keys(StatusCode)[Object.values(StatusCode).indexOf(code)]];
+        this.status(code).send(n);
     }
-
 
     /**
      * Creates an HTTP header field with the passed value. Resets the field if
@@ -284,7 +274,6 @@ export class RhinoResponse {
         this.setHeader(field, value);
         return this;
     }
-
 
     /**
      * Creates an HTTP header field with the passed value. Resets the field if
@@ -299,15 +288,14 @@ export class RhinoResponse {
             // Headers.set() in this case because that would reset the value
             // of the field on every call of the loop. Instead, we delete the field
             // (in case it already existed) and append to a new empty field.
-            value.forEach(val => this.RESPONSE_HEADERS.append(field, val));
+            value.forEach((val) => this.RESPONSE_HEADERS.append(field, val));
         } else {
             // Otherwise, just adds the value to the header
-            this.RESPONSE_HEADERS.set(field, value)
+            this.RESPONSE_HEADERS.set(field, value);
         }
 
         return this;
     }
-
 
     /**
      * Sets the status code for the response sent to the client

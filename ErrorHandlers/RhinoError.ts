@@ -10,7 +10,7 @@ export interface onErrorExecution {
 }
 
 /**
- * The Rhino_Error decorator attaches errorCode as
+ * The RhinoError decorator attaches errorCode as
  * a property of the decorated class
  */
 interface errorCodeProperty {
@@ -19,7 +19,7 @@ interface errorCodeProperty {
 
 /**
  * Defines the properties available inside a class
- * decorated with @Rhino_Error.
+ * decorated with @RhinoError.
  */
 export type RhinoErrorHandler = onErrorExecution & errorCodeProperty;
 
@@ -41,7 +41,7 @@ export interface ErrorData {
 /**
  * The next rhino error handler
  */
-export type NextError = (errData: ErrorData) => void;
+export type NextError = (errData:  ErrorData) => void;
 
 
 /**
@@ -50,9 +50,9 @@ export type NextError = (errData: ErrorData) => void;
  * for the error handler so that they can be accessed when
  * the class is instantiated.
  * @param code The error code that is class is able to resolve
- * 
+ *
  */
-export const Rhino_Error = (code: number) => {
+export const RhinoError = (code: number) => {
     return <T extends { new(...args: any[]): {} }>(target: T) => {
 
         // Attaches the hook parameters to the prototype

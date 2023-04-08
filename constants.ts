@@ -26,9 +26,8 @@ export enum HttpMethod {
      * Accepts ANY request method
      * @note This is not an official HTTP Request Method (hence the underscore)
      */
-    _ALL = "ALL"
+    _ALL = "ALL",
 }
-
 
 /**
  * HTTP Status Codes.
@@ -116,7 +115,6 @@ export enum StatusCode {
     NetworkConnectTimeoutError = 599,
 }
 
-
 /**
  * HTTP Status Codes Names
  * Visit https://www.restapitutorial.com/httpstatuscodes.html for
@@ -201,8 +199,7 @@ export const StatusCodeName: { [key: string]: string } = {
     NetworkAuthenticationRequired: "Network Authentication Required",
     NetworkReadTimeoutError: "Network Read Timeout Error",
     NetworkConnectTimeoutError: "Network Connect Timeout Error",
-}
-
+};
 
 /**
  * Common Header Fields
@@ -253,7 +250,6 @@ export enum HeaderField {
     ContentSecurityPolicy = "Content-Security-Policy",
 }
 
-
 /**
  * Common MIME types for restful APIs
  */
@@ -283,7 +279,6 @@ export enum MIMEType {
     TextXML = "text/xml",
     TextXMLCharsetUTF8 = "text/xml, charset=UTF-8",
 }
-
 
 /**
  * The MIME type for common file extensions
@@ -363,4 +358,4 @@ export const ExtMIMEType: { [key: string]: string } = {
     xml: "text/xml",
     xul: "application/vnd.mozilla.xul+xml",
     zip: "application/zip",
-}
+};

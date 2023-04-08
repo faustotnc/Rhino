@@ -1,21 +1,25 @@
 import {
-    Rhino_Endpoint, OnEndpointCalled, RhinoRequest,
-    RhinoResponse, NextHook, NextError, HttpMethod, MIMEType
+    HttpMethod,
+    MIMEType,
+    NextError,
+    NextHook,
+    OnEndpointCalled,
+    RhinoEndpoint,
+    RhinoRequest,
+    RhinoResponse,
 } from "../../../mod.ts";
 
-
-@Rhino_Endpoint({
+@RhinoEndpoint({
     path: "/hello",
     method: HttpMethod.GET,
 })
 export class HelloWorld implements OnEndpointCalled {
-
     constructor(
         private req: RhinoRequest,
         private res: RhinoResponse,
         private next: NextHook,
         private error: NextError
-    ) { }
+    ) {}
 
     /** Executed when this endpoint is requested */
     public onEndpointCall() {

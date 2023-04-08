@@ -12,11 +12,11 @@ Rhino is an Angular-inspired framework for creating scalable REST-APIs. It provi
 
 Rhino comes with five different modules for strong REST-API creation:
 
-- **@Rhino_Server** - *Class Decorator*: Creates a new server.
+- **@RhinoServer** - *Class Decorator*: Creates a new server.
 - **RhinoRouter** - *Class*: Defines the routes and endpoints for a server.
-- **@Rhino_Endpoint** - *Class Decorator*: Defines an endpoint handler.
-- **@Rhino_Hook** - *Class Decorator*: Defines a middleware that can be hooked to the request-response middleware pipeline.
-- **@Rhino_Error** - *Class Decorator*: Defines an error handler.
+- **@RhinoEndpoint** - *Class Decorator*: Defines an endpoint handler.
+- **@RhinoHook** - *Class Decorator*: Defines a middleware that can be hooked to the request-response middleware pipeline.
+- **@RhinoError** - *Class Decorator*: Defines an error handler.
 
 
 
@@ -26,7 +26,7 @@ Rhino comes with five different modules for strong REST-API creation:
 Crete a file named `server.ts`, then copy and paste the following code inside it.
 ``` typescript
 import {
-    Rhino_Server, OnServerListening,
+    RhinoServer, OnServerListening,
     ServerOptions, RunServers
 } from "https://deno.land/x/rhino/mod.ts";
 
@@ -34,7 +34,7 @@ import {
 import { myRouter } from  './router.ts';
 
 // Creates a server
-@Rhino_Server({
+@RhinoServer({
     port: 3200,
     router: myRouter
 })
@@ -78,12 +78,12 @@ export const myRouter = ROUTER;
 Create a file named `hello_world.endpoint.ts`, then copy and paste the following code inside it.
 ``` typescript
 import {
-    Rhino_Endpoint, OnEndpointCalled, RhinoRequest,
+    RhinoEndpoint, OnEndpointCalled, RhinoRequest,
     RhinoResponse, NextHook, NextError, HttpMethod, MIMEType
 } from "https://deno.land/x/rhino/mod.ts";
 
 
-@Rhino_Endpoint({
+@RhinoEndpoint({
     path: "/hello", // The path for this endpoint
     method: HttpMethod.GET, // This endpoint will only listen to GET requests
 })
